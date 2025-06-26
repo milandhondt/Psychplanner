@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int               @id @default(autoincrement()) @db.UnsignedInt
+  voornaam            String            @db.VarChar(255)
+  naam                String            @db.VarChar(255)
+  email               String            @unique(map: "idx_user_email_unique") @db.VarChar(255)
+  password_hash       String            @db.VarChar(255)
+  telefoon            String            @db.VarChar(255)
+  roles               Json
+  straat              String?
+  nr                  Int?
+  postcode            Int?
+  stad                String?
+  geboortedatum       DateTime?         @db.DateTime(0)
+  huisarts            String?
+  afsprakenKlant      Afspraak[]        @relation("AfsprakenKlant")
+  afsprakenPsycholoog Afspraak[]        @relation("AfsprakenPsycholoog")
+  beschikbaarheden    Beschikbaarheid[]
+  services            Service[]         @relation("PsycholoogServices")
+
+  @@map("users")
+}
+
+model Service {
+  id           Int        @id @default(autoincrement()) @db.UnsignedInt
+  naam         String     @unique
+  duur         Int
+  prijs        Float
+  beschrijving String
+  psychologen  User[]     @relation("PsycholoogServices")
+  afspraken    Afspraak[]
+
+  @@map("services")
+}
+
+model Afspraak {
+  id              Int      @id @default(autoincrement()) @db.UnsignedInt
+  datum           DateTime @db.DateTime(0)
+  formulier_nodig Boolean
+  opmerking       String?
+  klant_id        Int      @db.UnsignedInt
+  klant           User     @relation("AfsprakenKlant", fields: [klant_id], references: [id], onDelete: Cascade)
+  psycholoog_id   Int      @db.UnsignedInt
+  psycholoog      User     @relation("AfsprakenPsycholoog", fields: [psycholoog_id], references: [id])
+  service_id      Int?     @db.UnsignedInt
+  service         Service? @relation(fields: [service_id], references: [id], onDelete: SetNull)
+
+  @@map("afspraken")
+}
+
+model Beschikbaarheid {
+  id            Int      @id @default(autoincrement()) @db.UnsignedInt
+  psycholoog_id Int      @db.UnsignedInt
+  psycholoog    User     @relation(fields: [psycholoog_id], references: [id])
+  datum_start   DateTime @db.DateTime(0)
+  datum_eind    DateTime @db.DateTime(0)
+
+  @@map("beschikbaarheden")
+}
