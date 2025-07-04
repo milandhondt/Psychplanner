@@ -9,8 +9,6 @@
 
 **Psychplanner** is een web applicatie, gemaakt voor een psychologe, om het afhandelen van afspraken te vergemakkelijken. Psychologen kunnen hun beschikbaarheden doorgeven, en op basis hiervan kunnen klanten dan weer afspraken boeken. Verder kunnen psychologen ook de services die ze aanbieden aanpassen. Deze applicatie werd ontwikkeld voor een schoolopdracht.
 
-🔗 **Live website:** [https://frontendweb-2425-milandhondt-frontend.onrender.com/home](https://frontendweb-2425-milandhondt-frontend.onrender.com/home)
-
 ## Mijn rol
 
 - Ontwikkeling van de website **from scratch**
